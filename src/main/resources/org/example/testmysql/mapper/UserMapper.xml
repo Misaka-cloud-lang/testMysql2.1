@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.testmysql.mapper.UserMapper">
+        <resultMap id="UserResultMap" type="org.example.testmysql.pojo.User">
+            <id property="number" column="number"/>
+            <result property="deviceId" column="device_id"/>
+            <result property="latitude" column="latitude"/>
+            <result property="longitude" column="longitude"/>
+            <result property="uploadTime" column="upload_time"/>
+        </resultMap>
+
+        <select id="getAllUsers" resultMap="UserResultMap">
+            SELECT * FROM userdb.game_record
+        </select>
+
+        <select id="countActiveUsersInTimeRange" resultType="int">
+            SELECT COUNT(DISTINCT device_id) FROM userdb.game_record WHERE upload_time BETWEEN #{startTime} AND #{endTime}
+        </select>
+
+        <select id="countUsersInRegion" resultType="int">
+            SELECT COUNT(*) FROM userdb.game_record WHERE longitude BETWEEN #{minLongitude} AND #{maxLongitude} AND latitude BETWEEN #{minLatitude} AND #{maxLatitude}
+        </select>
+    <select id="getUsersInTimeRange" resultMap="UserResultMap">
+        SELECT * FROM userdb.game_record WHERE upload_time BETWEEN #{startTime} AND #{endTime}
+    </select>
+
+    <select id="getUsersInRegion" resultMap="UserResultMap">
+        SELECT * FROM userdb.game_record WHERE longitude BETWEEN #{minLongitude} AND #{maxLongitude} AND latitude BETWEEN #{minLatitude} AND #{maxLatitude}
+    </select>
+</mapper>
